@@ -1,18 +1,23 @@
 import React from 'react';
-import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
-import Resume from "./components/Resume";
+import { pdf } from '@react-pdf/renderer';
+import Resume from './components/Resume';
+import InputForm from './components/InputForm';
 
 function App() {
-  return (
-    <>
-      <PDFViewer width="50%" height="600px">
-        <Resume />
-      </PDFViewer>
+  const handleFormSubmit = async (data) => {
+    const blob = await pdf(<Resume data={data} />).toBlob();
+    const blobUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'resume.pdf';
+    link.click();
+    URL.revokeObjectURL(blobUrl);
+  };
 
-      <PDFDownloadLink document={<Resume />} fileName="example.pdf">
-        {({ loading }) => (loading ? 'Генерация PDF...' : 'Скачать PDF')}
-      </PDFDownloadLink>
-    </>
+  return (
+    <div style={{ padding: '20px' }}>
+      <InputForm onSubmit={handleFormSubmit} />
+    </div>
   );
 }
 
