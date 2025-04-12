@@ -3,6 +3,8 @@ import { pdf } from '@react-pdf/renderer';
 import Resume from './components/Resume';
 import InputForm from './components/InputForm';
 
+import './scss/styles.scss'
+
 function App() {
   const handleFormSubmit = async (data) => {
     const blob = await pdf(<Resume data={data} />).toBlob();
@@ -15,9 +17,9 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <section className='mainForm'>
       <InputForm onSubmit={handleFormSubmit} />
-    </div>
+    </section>
   );
 }
 
